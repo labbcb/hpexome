@@ -10,7 +10,7 @@ Our workflow for processing WES data was based on good practices described by au
 
 We used GATK-Queue workflow management to implement the workflow. It consists in a QScript file written in Scala programming language. The input parameters from every walker are set to default values but user can change theses values through the R interface.
 
-Download latest version of __GATK-Queue__ at https://software.broadinstitute.org/gatk/download/queue.
+Download latest version of __GATK-Queue__ at <a href="https://software.broadinstitute.org/gatk/download/queue" target="_blank">https://software.broadinstitute.org/gatk/download/queue</a>.
 
 Download latest version of __hpexome__ <a href="https://raw.githubusercontent.com/labbcb/hpexome/master/Hpexome.scala" target="_blank">here</a>.
 
