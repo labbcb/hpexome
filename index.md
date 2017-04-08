@@ -12,7 +12,7 @@ We used GATK-Queue workflow management to implement the workflow. It consists in
 
 Download latest version of __GATK-Queue__ at https://software.broadinstitute.org/gatk/download/queue.
 
-Download latest version of __hpexome__ [here]().
+Download latest version of __hpexome__ <a href="https://raw.githubusercontent.com/labbcb/hpexome/master/Hpexome.scala" target="_blank">here</a>.
 
 ## Usage
 
