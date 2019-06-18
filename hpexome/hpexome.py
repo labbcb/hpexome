@@ -38,21 +38,23 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
 @click.option('-I', '--bam', 'bam_files', required=True, multiple=True, help='One or more BAM files')
 @click.option('-R', '--genome', 'genome_fasta_file', required=True, help='Reference genome in single FASTA file')
 @click.option('--dbsnp', 'dbsnp_file', required=True, help='dbSNP file in VCF format')
-@click.option('--indels', 'known_indels_files', multiple=True)
 @click.option('--sites', 'known_sites_files', required=True, multiple=True,
               help='VCF files containing known polymorphic sites to skip over in the recalibration algorithm')
+@click.option('--indels', 'known_indels_files', multiple=True)
 @click.option('-L', '--intervals', 'intervals_files', multiple=True,
               help='One or more genomic intervals over which to operate')
 @click.option('--unified_vcf', is_flag=True, default=False, help="Unify VCF files into a single one", show_default=True)
-@click.option('-O', '--output_file_name', default='unified.vcf', help='Output file name for unified VCF', show_default=True)
-@click.option('--min_prunning', default=2, help='Minimum support to not prune paths in the graph')
-@click.option('--stand_call_conf', default=30,
+@click.option('-O', '--output_file_name', default='unified.vcf', help='Output file name for unified VCF',
+              show_default=True)
+@click.option('--min_prunning', default=2, help='Minimum support to not prune paths in the graph', show_default=True)
+@click.option('--stand_call_conf', default=30, show_default=True,
               help='Minimum phred-scaled confidence threshold at which variants should be called')
 @click.option('--job_runner')
 @click.option('-nt', '--num_data_threads', type=click.INT, help='Number of data threads')
 @click.option('-nct', '--num_threads_per_data_thread', type=click.INT, help='Number of threads per data thread')
 @click.option('--scatter_count', type=click.INT)
-@click.option('--java_path', default='java', help='Path to java. Use this to pass JVM-specific arguments', show_default=True)
+@click.option('--java_path', default='java', help='Path to java. Use this to pass JVM-specific arguments',
+              show_default=True)
 @click.option('--queue_path', default='Queue.jar', help='Path to Queue jar file', show_default=True)
 @click.argument('destination', default='.', type=click.Path())
 def hpexome(bam_files, genome_fasta_file, dbsnp_file, known_indels_files, known_sites_files, intervals_files,
