@@ -94,4 +94,4 @@ def hpexome(bam_files, genome_fasta_file, dbsnp_file, known_indels_files, known_
         os.mkdir(destination)
 
     click.echo('Executing command: ' + ' '.join(command), err=True)
-    exit(subprocess.run(command).returncode)
+    exit(subprocess.call(command))
