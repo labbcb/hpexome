@@ -1,0 +1,75 @@
+---
+title: "Variant Calling on a High Performance System"
+author: "Lucas Cendes; Welliton de Souza; Benilton Carvalho"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    keep_md: true
+---
+
+```{r, warning=FALSE, message=FALSE}
+library(knitr)
+library(reshape2)
+library(plyr)
+library(ggplot2)
+library(quantreg)
+```
+
+The observed times (in hours) to perform variant calling using GATK on a high performance system managed via Sun Grid Engine (SGE) are shown below. The compute node used for this task is an IBM System x3850 X5 with 1TB RAM, 8 Xeon processors E7540 (6 cores) 2GHz HT and 8 HDDs 300 GB.
+```{r times}
+times = data.frame(c(66769, 90619, 77448, 78798, 78408),
+                   c(56719, 58518, 56750, 56928, 57319),
+                   c(23388, 39888, 32839, 39798, 39768),
+                   c(16760, 19219, 18768, 14989, 14959),
+                   c(12320, 12769, 14269, 13729, 13670),
+                   c(11240, 11479, 10790, 11122, 10819))/3600
+names(times) = c(1, 2, 4, 8, 16, 32)
+kable(times, digits=2, caption='Time (hrs) to process with 1, 2, 4, 8, 16 and 32 threads')
+```
+
+Below, we transform the table to a long format, which will simplify downstream analyses.
+```{r}
+timeL = melt(times, value.name='time', variable.name='n')
+timeL$n = as.integer(as.character(timeL$n))
+```
+
+The boxplot below shows the gain in performance obtained through parallelization of the variant calling algorithm. One can easily note the dramatic decrease in time. When performing the analysis using a single processing unit, we observed a median time of `r sprintf("%2.2f", median(times[,1]))` hours. When we used 16 parallel processing units, the median time decreased to `r sprintf("%2.2f", median(times[,5]))` hours. On this particular comparison, parallel processing was `r sprintf("%2.2f", median(times[,1])/median(times[,5]))`x faster than the single process. 
+```{r}
+ggplot(timeL, aes(factor(n), time)) + 
+    geom_boxplot() + 
+    labs(x='Parallel Processing Units', y='Elapsed Time (hours)') +
+    theme_bw(base_size = 11)
+ggsave("elapsed_time.tiff", dpi = 600)
+```
+
+We observed that the gain in time is not linear on the number of processing units. For this reason, we transform both variables (number of parallel processing units and time) to the logarithmic scale (base 2), as the Figure below shows. This strategy brings the relationship between both variables closer to linearity, allowing the use of advanced statistical methods for assessment of gains in performance.
+```{r}
+ggplot(timeL, aes(log2(n), log2(time))) + 
+    geom_point() + 
+    geom_smooth(method='loess', color='black') + 
+    labs(x='log2(Parallel Processing Units)', y='log2(hours)') +
+    theme_bw(base_size = 11)
+ggsave("time_smooth.tiff", dpi = 600)
+```
+
+Below, we perform a quantile regression to estimate the median elapsed time (in the logarithmic scale) as a function of the number of parallel processing units (also in the logarithmic scale).
+```{r, warning=FALSE}
+fit = rq(log2(time)~log2(n), tau=.5, data=timeL)
+summary(fit)
+```
+The table above shows the estimated median time in the logarithmic scale (`r sprintf("%1.2f", coef(fit)[1])`) for a run using a single processing unit. This model presents the evidences in favor of time reduction through parallel processing: the second coefficient (`r sprintf("%1.2f", coef(fit)[2])`) quantifies the reduction in (log2) time for every time we double the number of parallel processing units. By representing the number of parallel processing units by $n$, we can rewrite this model as:
+$$log_2(time) = 4.66 - 0.68 \times log_2(n).$$
+
+Because the lower and upper confidence bounds for the $log_2(n)$ coefficient range bewtween $-0.73$ and $-0.63$ (i.e., the confidence interval does not include the zero, which would suggest the lack of association between the variables), we are 95\% certain that doubling the number of parallel processing units imply on a significant reduction of processing time. This model suggests that every time we double the number of processors, the required time for execution will be reduced to `r sprintf("%2.2f", (2^coef(fit)[2])*100)`\% of what was needed before ($2^{-0.68427} = 0.6223 = 62.23\%$).
+
+```{r}
+new = data.frame(n=c(1, 2, 4, 8, 16, 32))
+pred = predict(fit, newdata=new)
+final = cbind(new, data.frame(log2time=pred, time=2^pred))
+kable(final, digits=2, caption='Estimated Median Time to Completion of Process by Number of Parallel Processing Units')
+```
+
+Acknowledgements
+================
+
+We would like to thank the EMBRAPA Multiuser Bioinformatics Laboratory (http://www.lmb.cnptia.embrapa.br) for providing access to the high-performance computing environment.

@@ -1,20 +1,20 @@
-import click
 import os
-import subprocess
-import itertools
 import os.path
-import urllib.request
+import shutil
+import subprocess
 import tarfile
 import tempfile
-import shutil
+import urllib.request
+import pkg_resources
+
+import click
 
 
 def check_files_exist(files):
     """Check a list of files printing those that not found"""
-    files = [files] if isinstance(files, str) else files
-    files_not_found = [not os.path.isfile(f) for f in files]
+    files_not_found = [file for file in files if not os.path.isfile(file)]
     if any(files_not_found):
-        for file in list(itertools.compress(files, files_not_found)):
+        for file in files:
             click.echo('File not found: ' + file, err=True)
         exit(1)
 
@@ -27,6 +27,7 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
     click.echo('Downloading Queue version {}... '.format(version), err=True, nl=False)
     url = 'https://software.broadinstitute.org/gatk/download/auth?package=Queue-archive&version=' + version
     urllib.request.urlretrieve(url, bz2_file)
+    click.echo('done')
 
     with tarfile.open(bz2_file, 'r:bz2') as file:
         file.extractall(temp_dir)
@@ -64,19 +65,17 @@ def hpexome(bam_files, genome_fasta_file, dbsnp_file, known_indels_files, known_
     if not os.path.isfile(queue_path):
         download_queue(queue_path)
 
-    script_path = os.path.join(os.path.dirname(__file__), 'Hpexome.scala')
-    command = [java_path, '-jar', queue_path, '-S', script_path, '-run']
+    script_path = pkg_resources.resource_filename(__name__, 'Hpexome.scala')
+    command = [java_path, '-Djava.io.tmpdir=' + destination, '-jar', queue_path, '-S', script_path, '-run']
 
     arguments = {'-I': bam_files, '-R': genome_fasta_file, '-dbsnp': dbsnp_file, '-known': known_indels_files,
                  '-knownSites': known_sites_files, '-L': intervals_files}
     for argument, value in arguments.items():
-        if not value:
-            continue
-        check_files_exist(value)
-        files = list(value) if isinstance(value, tuple) else [value]
-        for file in files:
-            command.extend([argument, file])
-
+        if value:
+            files = [value] if isinstance(value, str) else value
+            check_files_exist(files)
+            for file in files:
+                command.extend([argument, file])
     if unified_vcf:
         command.extend(['-unifiedVCF', '-o', os.path.join(destination, output_file_name)])
 
