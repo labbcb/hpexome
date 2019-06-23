@@ -14,5 +14,5 @@ hpexome \
     --sites ${REF_DIR}/1000G_phase1.snps.high_confidence.hg19.sites.vcf \
     --sites ${REF_DIR}/1000G_omni2.5.hg19.sites.vcf \
     --scatter_count 16 \
-    --job_runner PbsEngine \
+    --queue_args "PbsEngine" \
     ${RESULT_DIR}/hpexome_validation

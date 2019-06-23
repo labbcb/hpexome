@@ -53,7 +53,7 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
 @click.option('-nt', '--num_data_threads', type=click.INT, help='Number of data threads')
 @click.option('-nct', '--num_threads_per_data_thread', type=click.INT, help='Number of threads per data thread')
 @click.option('--scatter_count', type=click.INT)
-@click.option('--queue_args', help('Additional arguments to Queue (between quotes)'))
+@click.option('--queue_args', help='Additional arguments to Queue (between quotes)')
 @click.option('--java_path', default='java', help='Path to java. Use this to pass JVM-specific arguments',
               show_default=True)
 @click.option('--queue_path', default='Queue.jar', help='Path to Queue jar file', show_default=True)
