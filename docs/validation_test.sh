@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-CSV_FILE=hpexome_timings.csv
 ALN_DIR=~/bioinf/aln
 REF_DIR=~/bioinf/ref/hg19
 RESULT_DIR=~/bioinf/res
@@ -14,5 +13,8 @@ hpexome \
     --sites ${REF_DIR}/1000G_phase1.snps.high_confidence.hg19.sites.vcf \
     --sites ${REF_DIR}/1000G_omni2.5.hg19.sites.vcf \
     --scatter_count 16 \
-    --queue_args "PbsEngine" \
+    --job_runner PbsEngine \
+    --job_queue bigmem \
+    --job_native walltime=72:00:00 \
+    --logging_level DEBUG \
     ${RESULT_DIR}/hpexome_validation
