@@ -90,7 +90,7 @@ def hpexome(bam_files, genome_fasta_file, dbsnp_file, known_indels_files, known_
     if scatter_count:
         command.extend(['-scattercount', str(scatter_count)])
     if queue_args:
-        command.append(queue_args)
+        command.extend(queue_args.split())
 
     if not os.path.exists(destination):
         os.mkdir(destination)
