@@ -50,23 +50,25 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
 @click.option('--min_prunning', default=2, help='Minimum support to not prune paths in the graph', show_default=True)
 @click.option('--stand_call_conf', default=30, show_default=True,
               help='Minimum phred-scaled confidence threshold at which variants should be called')
-@click.option('--job_runner')
 @click.option('-nt', '--num_data_threads', type=click.INT, help='Number of data threads')
 @click.option('-nct', '--num_threads_per_data_thread', type=click.INT, help='Number of threads per data thread')
 @click.option('--scatter_count', type=click.INT)
+@click.option('--queue_args', help('Additional arguments to Queue (between quotes)'))
 @click.option('--java_path', default='java', help='Path to java. Use this to pass JVM-specific arguments',
               show_default=True)
 @click.option('--queue_path', default='Queue.jar', help='Path to Queue jar file', show_default=True)
 @click.argument('destination', default='.', type=click.Path())
 def hpexome(bam_files, genome_fasta_file, dbsnp_file, known_indels_files, known_sites_files, intervals_files,
-            unified_vcf, output_file_name, min_prunning, stand_call_conf, job_runner,
-            num_data_threads, num_threads_per_data_thread, scatter_count, java_path, queue_path, destination):
+            unified_vcf, output_file_name, min_prunning, stand_call_conf,
+            num_data_threads, num_threads_per_data_thread, scatter_count, queue_args,
+            java_path, queue_path, destination):
     """An automated workflow for processing whole-exome sequencing data"""
     if not os.path.isfile(queue_path):
         download_queue(queue_path)
 
     script_path = pkg_resources.resource_filename(__name__, 'Hpexome.scala')
-    command = [java_path, '-Djava.io.tmpdir=' + destination, '-jar', queue_path, '-S', script_path, '-run']
+    command = [java_path, '-Djava.io.tmpdir=' + destination, '-jar', queue_path, '-S', script_path, '-run',
+               '-runDir', destination, '-tempDir', destination, '-logDir', destination]
 
     arguments = {'-I': bam_files, '-R': genome_fasta_file, '-dbsnp': dbsnp_file, '-known': known_indels_files,
                  '-knownSites': known_sites_files, '-L': intervals_files}
@@ -81,14 +83,14 @@ def hpexome(bam_files, genome_fasta_file, dbsnp_file, known_indels_files, known_
 
     command.extend(['-stand_call_conf', str(stand_call_conf), '-minPruning', str(min_prunning), '-outdir', destination])
 
-    if job_runner:
-        command.extend(['-jobRunner', job_runner])
     if num_data_threads:
         command.extend(['-nt', str(num_data_threads)])
     if num_threads_per_data_thread:
         command.extend(['-nct', str(num_threads_per_data_thread)])
     if scatter_count:
         command.extend(['-scattercount', str(scatter_count)])
+    if queue_args:
+        command.append(queue_args)
 
     if not os.path.exists(destination):
         os.mkdir(destination)
