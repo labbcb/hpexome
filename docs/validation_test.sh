@@ -16,5 +16,6 @@ hpexome \
     --job_runner PbsEngine \
     --job_queue bigmem \
     --job_native walltime=72:00:00 \
+    --job_native "make 1" \
     --logging_level DEBUG \
     ${RESULT_DIR}/hpexome_validation
