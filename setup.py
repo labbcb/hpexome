@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='hpexome',
-    version='2.0.0',
+    version='1.0.0',
     author="Welliton Souza",
     author_email="well309@gmail.com",
     description="An automated workflow for processing whole-exome sequencing data",
