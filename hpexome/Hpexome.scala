@@ -1,6 +1,6 @@
 /*
 * hpexome
-* Copyright (C) 2017 Lucas Lopes Cendes
+* Copyright (C) 2017-2019 Lucas Lopes Cendes
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
