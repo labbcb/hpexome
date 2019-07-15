@@ -57,6 +57,7 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
 @click.option('--job_queue')
 @click.option('--job_native', multiple=True)
 @click.option('--logging_level')
+@click.option('--dont_run', is_flag=True, default=False, show_default=True, help='Perform dry run')
 @click.option('--java_path', default='java', help='Path to java. Use this to pass JVM-specific arguments',
               show_default=True)
 @click.option('--queue_path', default='Queue.jar', help='Path to Queue jar file', show_default=True)
@@ -65,15 +66,18 @@ def hpexome(bam_files, genome_fasta_file, dbsnp_file,
             known_sites_files, known_indels_files, intervals_files,
             unified_vcf, output_file_name, min_prunning, stand_call_conf,
             num_data_threads, num_threads_per_data_thread, scatter_count,
-            job_runner, job_queue, job_native, logging_level,
+            job_runner, job_queue, job_native, logging_level, dont_run,
             java_path, queue_path, destination):
     """An automated workflow for processing whole-exome sequencing data"""
     if not os.path.isfile(queue_path):
         download_queue(queue_path)
 
     script_path = pkg_resources.resource_filename(__name__, 'Hpexome.scala')
-    command = [java_path, '-Djava.io.tmpdir=' + destination, '-jar', queue_path, '-S', script_path, '-run',
+    command = [java_path, '-Djava.io.tmpdir=' + destination, '-jar', queue_path, '-S', script_path,
                '-runDir', destination, '-tempDir', destination, '-logDir', destination, '-outdir', destination]
+
+    if not dont_run:
+        command.append('-run')
 
     arguments = {'-I': bam_files, '-R': genome_fasta_file, '-dbsnp': dbsnp_file, '-known': known_indels_files,
                  '-knownSites': known_sites_files, '-L': intervals_files}
