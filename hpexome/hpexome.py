@@ -14,7 +14,7 @@ def check_files_exist(files):
     """Check a list of files printing those that not found"""
     files_not_found = [file for file in files if not os.path.isfile(file)]
     if any(files_not_found):
-        for file in files:
+        for file in files_not_found:
             click.echo('File not found: ' + file, err=True)
         exit(1)
 
