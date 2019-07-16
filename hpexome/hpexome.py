@@ -74,7 +74,7 @@ def hpexome(bam_files, genome_fasta_file, dbsnp_file,
 
     script_path = pkg_resources.resource_filename(__name__, 'Hpexome.scala')
     command = [java_path, '-Djava.io.tmpdir=' + destination, '-jar', queue_path, '-S', script_path,
-               '-runDir', destination, '-tempDir', destination, '-logDir', destination, '-outdir', destination]
+               '-outdir', destination]
 
     if not dont_run:
         command.append('-run')

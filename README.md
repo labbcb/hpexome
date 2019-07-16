@@ -17,6 +17,5 @@ hpexome \
     --unified_vcf \
     --num_data_threads 4 \
     --num_threads_per_data_thread 4 \
-    --dont_run \
     results
 ```
