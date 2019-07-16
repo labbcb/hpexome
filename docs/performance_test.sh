@@ -32,6 +32,6 @@ do
             ${RESULT_DIR}/hpexome_${scatter_count}_${count}
 
         end="$(date +%s)"
-        echo "${scatter_count}, ${count}, ${start}, ${end}" > ${CSV_FILE}
+        echo "${scatter_count}, ${count}, ${start}, ${end}" >> ${CSV_FILE}
     done
 done
