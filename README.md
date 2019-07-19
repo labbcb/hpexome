@@ -4,10 +4,14 @@
 pip install --user --force git+https://github.com/labbcb/hpexome
 ```
 
+Requirements
+
+- BAM files must be sorted in `coordinate` mode. See [sort bam files](docs/sort_bam_files.sh) script.
+
 ```bash
 hpexome \
-    --bam aln/NA12877_S1.bam \
-    --bam aln/NA12878_S1.bam \
+    --bam aln/NA12877_S1.sorted.bam \
+    --bam aln/NA12878_S1.sorted.bam \
     --genome ref/ucsc.hg19.fasta  \
     --dbsnp ref/dbsnp_138.hg19.vcf \
     --indels ref/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf \
