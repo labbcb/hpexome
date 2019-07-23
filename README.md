@@ -7,6 +7,7 @@ pip install --user --force git+https://github.com/labbcb/hpexome
 Requirements
 
 - BAM files must be sorted in `coordinate` mode. See [sort bam files](docs/sort_bam_files.sh) script.
+- BAM files must have `@RG` tags with `ID, SM, LB, PL and PU` information. Seel [fix rg tag](docs/fix_rg_tag_bam.sh) script.
 
 ```bash
 hpexome \
