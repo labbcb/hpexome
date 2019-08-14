@@ -61,11 +61,14 @@ class Hpexome extends QScript {
   @Argument(doc = "Standard min confidence threshold for calling", shortName = "stand_call_conf", required = false)
   var standcallconf: Int = _
 
-  @Argument(doc = "Minumim support to not prune paths in graph", shortName = "minPruning", required = false)
+  @Argument(doc = "Minimum support to not prune paths in graph", shortName = "minPruning", required = false)
   var minpruning: Int = _
 
+  @Argument(doc = "Output file name for unified VCF (--unified_vcf)", shortName = "o", required = false)
+  var outputFileName: String = "unified.vcf"
+
   @Output
-  var hapcall: File = "output.HC.raw.vcf"
+  var hapcall: File = outputFileName
 
   if (standcallconf == 0) {
     standcallconf = 30
