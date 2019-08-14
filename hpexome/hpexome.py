@@ -5,6 +5,10 @@ import subprocess
 import tarfile
 import tempfile
 import urllib.request
+from os import listdir
+from os.path import join, basename, isdir, isfile
+from re import compile
+
 import pkg_resources
 
 import click
@@ -36,7 +40,7 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
 
 
 @click.command()
-@click.option('-I', '--bam', 'bam_files', required=True, multiple=True, help='One or more BAM files')
+@click.option('-I', '--bam', 'bams', required=True, multiple=True, help='One or more BAM files or directories')
 @click.option('-R', '--genome', 'genome_fasta_file', required=True, help='Reference genome in single FASTA file')
 @click.option('--dbsnp', 'dbsnp_file', required=True, help='dbSNP file in VCF format')
 @click.option('--sites', 'known_sites_files', required=True, multiple=True,
@@ -62,7 +66,7 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
               show_default=True)
 @click.option('--queue_path', default='Queue.jar', help='Path to Queue jar file', show_default=True)
 @click.argument('destination', default='.', type=click.Path())
-def hpexome(bam_files, genome_fasta_file, dbsnp_file,
+def hpexome(bams, genome_fasta_file, dbsnp_file,
             known_sites_files, known_indels_files, intervals_files,
             unified_vcf, output_file_name, min_prunning, stand_call_conf,
             num_data_threads, num_threads_per_data_thread, scatter_count,
@@ -71,6 +75,18 @@ def hpexome(bam_files, genome_fasta_file, dbsnp_file,
     """An automated workflow for processing whole-exome sequencing data"""
     if not os.path.isfile(queue_path):
         download_queue(queue_path)
+
+    m = compile('\\.bam$')
+    bam_files = []
+    for bam in bams:
+        if isdir(bam):
+            files = listdir(bam)
+            bam_files.extend([join(bam, file) for file in files if m.search(basename(file))])
+        elif isfile(bam):
+            bam_files.append(bam)
+        else:
+            click.echo('File or directory not found: ' + bam, err=True)
+            exit(1)
 
     script_path = pkg_resources.resource_filename(__name__, 'Hpexome.scala')
     command = [java_path, '-Djava.io.tmpdir=' + destination, '-jar', queue_path, '-S', script_path,
