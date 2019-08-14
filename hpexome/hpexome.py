@@ -88,7 +88,7 @@ def hpexome(bam_files, genome_fasta_file, dbsnp_file,
             for file in files:
                 command.extend([argument, file])
     if unified_vcf:
-        command.extend(['-unifiedVCF', '-o', output_file_name])
+        command.extend(['-unifiedVCF', '-filename', output_file_name])
 
     command.extend(['-stand_call_conf', str(stand_call_conf), '-minPruning', str(min_prunning)])
 

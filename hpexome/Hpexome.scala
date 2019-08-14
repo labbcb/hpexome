@@ -64,7 +64,7 @@ class Hpexome extends QScript {
   @Argument(doc = "Minimum support to not prune paths in graph", shortName = "minPruning", required = false)
   var minpruning: Int = _
 
-  @Argument(doc = "Output file name for unified VCF (--unified_vcf)", shortName = "o", required = false)
+  @Argument(doc = "Output file name for unified VCF (--unified_vcf)", shortName = "filename", required = false)
   var outputFileName: String = "unified.vcf"
 
   @Output
