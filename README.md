@@ -11,8 +11,8 @@ Requirements
 
 ```bash
 hpexome \
-    --bam aln/NA12877_S1.sorted.bam \
-    --bam aln/NA12878_S1.sorted.bam \
+    --bam aln/NA12877_S1.sorted.rgfix.bam \
+    --bam aln/NA12878_S1.sorted.rgfix.bam \
     --genome ref/ucsc.hg19.fasta  \
     --dbsnp ref/dbsnp_138.hg19.vcf \
     --indels ref/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf \
@@ -22,5 +22,5 @@ hpexome \
     --unified_vcf \
     --num_data_threads 4 \
     --num_threads_per_data_thread 4 \
-    results
+    res
 ```
