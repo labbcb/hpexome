@@ -6,7 +6,7 @@ import tarfile
 import tempfile
 import urllib.request
 from os import listdir
-from os.path import join, basename, isdir, isfile
+from os.path import join, basename, isdir, isfile, exists
 from re import compile
 
 import pkg_resources
@@ -16,7 +16,7 @@ import click
 
 def check_files_exist(files):
     """Check a list of files printing those that not found"""
-    files_not_found = [file for file in files if not os.path.isfile(file)]
+    files_not_found = [file for file in files if not isfile(file)]
     if any(files_not_found):
         for file in files_not_found:
             click.echo('File not found: ' + file, err=True)
@@ -26,7 +26,7 @@ def check_files_exist(files):
 def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
     """Download Queue jar file"""
     temp_dir = tempfile.mkdtemp()
-    bz2_file = os.path.join(temp_dir, 'Queue-{}.tar.bz2'.format(version))
+    bz2_file = join(temp_dir, 'Queue-{}.tar.bz2'.format(version))
 
     click.echo('Downloading Queue version {}... '.format(version), err=True, nl=False)
     url = 'https://software.broadinstitute.org/gatk/download/auth?package=Queue-archive&version=' + version
@@ -35,7 +35,7 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
 
     with tarfile.open(bz2_file, 'r:bz2') as file:
         file.extractall(temp_dir)
-    shutil.move(os.path.join(temp_dir, 'Queue-' + version, 'Queue.jar'), destination)
+    shutil.move(join(temp_dir, 'Queue-' + version, 'Queue.jar'), destination)
     shutil.rmtree(temp_dir)
 
 
@@ -73,7 +73,7 @@ def hpexome(bams, genome_fasta_file, dbsnp_file,
             job_runner, job_queue, job_native, logging_level, dont_run,
             java_path, queue_path, destination):
     """An automated workflow for processing whole-exome sequencing data"""
-    if not os.path.isfile(queue_path):
+    if not isfile(queue_path):
         download_queue(queue_path)
 
     m = compile('\\.bam$')
@@ -122,7 +122,7 @@ def hpexome(bams, genome_fasta_file, dbsnp_file,
     if logging_level:
         command.extend(['-l', logging_level])
 
-    if not os.path.exists(destination):
+    if not exists(destination):
         os.mkdir(destination)
 
     click.echo('Executing command: ' + ' '.join(command), err=True)
