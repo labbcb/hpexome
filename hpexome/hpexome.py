@@ -9,9 +9,8 @@ from os import listdir
 from os.path import join, basename, isdir, isfile, exists, abspath
 from re import compile
 
-import pkg_resources
-
 import click
+import pkg_resources
 
 
 def check_files_exist(files):
@@ -78,14 +77,16 @@ def hpexome(bams, genome_fasta_file, dbsnp_file,
         download_queue(queue_path)
         queue_path = abspath(queue_path)
 
+    # given a list of BAM files or directories containing them,
+    # create a list of absolute path to BAM files
     m = compile('\\.bam$')
     bam_files = []
     for bam in bams:
         if isdir(bam):
             files = listdir(bam)
-            bam_files.extend([join(bam, file) for file in files if m.search(basename(file))])
+            bam_files.extend([abspath(join(bam, file)) for file in files if m.search(basename(file))])
         elif isfile(bam):
-            bam_files.append(bam)
+            bam_files.append(abspath(bam))
         else:
             click.echo('File or directory not found: ' + bam, err=True)
             exit(1)
