@@ -72,10 +72,11 @@ def hpexome(bams, genome_fasta_file, dbsnp_file,
             job_runner, job_queue, job_native, logging_level, dont_run,
             java_path, queue_path, destination):
     """An automated workflow for processing whole-exome sequencing data"""
-    # if Queue.jar not found download it in working directory and expand path
+    # if Queue.jar not found download it in working directory,
+    # then expand path
     if not isfile(queue_path):
         download_queue(queue_path)
-        queue_path = abspath(queue_path)
+    queue_path = abspath(queue_path)
 
     # given a list of BAM files or directories containing them,
     # create a list of absolute path to BAM files
