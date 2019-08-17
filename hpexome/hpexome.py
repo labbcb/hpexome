@@ -57,10 +57,10 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
 @click.option('-nt', '--num_data_threads', type=click.INT, help='Number of data threads')
 @click.option('-nct', '--num_threads_per_data_thread', type=click.INT, help='Number of threads per data thread')
 @click.option('--scatter_count', type=click.INT)
-@click.option('--job_runner')
-@click.option('--job_queue')
-@click.option('--job_native', multiple=True)
-@click.option('--logging_level')
+@click.option('--job_runner', help='Use the specified job runner to dispatch command line jobs')
+@click.option('--job_queue', help='Default queue for compute farm jobs')
+@click.option('--job_native', multiple=True, help='Native arguments to pass to the job runner')
+@click.option('--logging_level', help='Set the minimum level of logging')
 @click.option('--dont_run', is_flag=True, default=False, show_default=True, help='Perform dry run')
 @click.option('--java_path', default='java', help='Path to java. Use this to pass JVM-specific arguments',
               show_default=True)
@@ -89,8 +89,7 @@ def hpexome(bams, genome_fasta_file, dbsnp_file,
             exit(1)
 
     script_path = pkg_resources.resource_filename(__name__, 'Hpexome.scala')
-    command = [java_path, '-Djava.io.tmpdir=' + destination, '-jar', queue_path, '-S', script_path,
-               '-outdir', destination]
+    command = [java_path, '-jar', queue_path, '-S', script_path, '-outdir', destination]
 
     if not dont_run:
         command.append('-run')
@@ -127,4 +126,4 @@ def hpexome(bams, genome_fasta_file, dbsnp_file,
         os.mkdir(destination)
 
     click.echo('Executing command: ' + ' '.join(command), err=True)
-    exit(subprocess.call(command))
+    exit(subprocess.call(command, cwd=destination))
