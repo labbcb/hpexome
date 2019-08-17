@@ -92,8 +92,10 @@ def hpexome(bams, genome_fasta_file, dbsnp_file,
             click.echo('File or directory not found: ' + bam, err=True)
             exit(1)
 
+    # get Queue script inside this Python package
+    # start building command line
     script_path = pkg_resources.resource_filename(__name__, 'Hpexome.scala')
-    command = [java_path, '-jar', queue_path, '-S', script_path, '-outdir', destination]
+    command = [java_path, '-jar', queue_path, '-S', script_path]
 
     if not dont_run:
         command.append('-run')
