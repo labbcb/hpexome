@@ -30,9 +30,9 @@ OPTIONS:
 
 __Required arguments__
 
-- `-I, --bam` Inputs on or more sequences stored in a .bam file. This parameter is _mandatory_.
-- `-R, --genome` Inputs a reference genetic sequence. This parameter is _mandatory_.
-- `--dbsnp` Inputs the dbSNIP file, in which the rslIDs that are used to populate the ID column of the output. This parameter is _mandatory_.
+- `-I, --bam` One or more sequence alignment files in BAM format _or_ directories containing `*.bam` files.
+- `-R, --genome` Inputs a reference genetic sequence.
+- `--dbsnp` Inputs the dbSNIP file, in which the IDs that are used to populate the ID column of the output.
 - `--sites` Inputs a database of known polymorphic sites to skip over in the recalibration algorithm to be used in the BaseRecalibrator.
 
 __Optional arguments__
@@ -62,7 +62,8 @@ Using local computing environment
 
 ``` bash
 hpexome \
-    --bam NA12877_S1.bam --bam NA12878_S1.bam \
+    --bam NA12877_S1.bam \
+    --bam NA12878_S1.bam \
     --genome ucsc.hg19.fasta  \
     --dbsnp dbsnp_138.hg19.vcf \
     --indels Mills_and_1000G_gold_standard.indels.hg19.sites.vcf \
@@ -79,7 +80,8 @@ Using cluster environment (PBS/Torque)
 
 ``` bash
 hpexome \
-    --bam NA12877_S1.bam --bam NA12878_S1.bam \
+    --bam NA12877_S1.bam \
+    --bam NA12878_S1.bam \
     --genome ucsc.hg19.fasta  \
     --dbsnp dbsnp_138.hg19.vcf \
     --indels Mills_and_1000G_gold_standard.indels.hg19.sites.vcf \
@@ -88,7 +90,7 @@ hpexome \
     --sites 1000G_omni2.5.hg19.sites.vcf \
     --unified_vcf \
     --scatter_count 4 \
-    --job_runner PbsEngine \
+    --job_runner GridEngine \
     results
 ```
 
