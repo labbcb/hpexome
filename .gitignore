@@ -4,3 +4,5 @@ hpexome.egg-info
 Queue.jar
 venv
 .vscode
+dist
+build

@@ -1,1 +1,1 @@
-name = 'hpexome'
+name = 'HPexome'
