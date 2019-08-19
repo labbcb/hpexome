@@ -31,3 +31,5 @@ hpexome \
     --job_runner GridEngine \
     result_fies
 ```
+
+For more information see <http://bcblab.org/hpexome>.
