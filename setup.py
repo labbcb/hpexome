@@ -11,7 +11,7 @@ setuptools.setup(
     description="An automated tool for processing whole-exome sequencing data",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/labbcb/hpexome",
+    url="http://bcblab.org/hpexome",
     packages=setuptools.find_packages(),
     include_package_data=True,
     classifiers=[
@@ -23,5 +23,9 @@ setuptools.setup(
     entry_points='''
         [console_scripts]
         hpexome=hpexome.hpexome:hpexome
-    '''
+    ''',
+    project_urls={
+        "Source Code": "https://github.com/labbcb/hpexome",
+        "Bug Tracker": "https://github.com/labbcb/hpexome/issues"
+    }
 )
