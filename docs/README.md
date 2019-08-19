@@ -16,7 +16,7 @@ It takes one or more ready-abalysis BAM files, reference genome file, known SNP 
 We used [GATK-Queue](http://gatkforums.broadinstitute.org/gatk/discussion/1306/overview-of-queue) workflow management to implement the workflow.
 It consists in a QScript file written in Scala programming language.
 The input parameters from every walker are set to default values but user can change theses values through the R interface.
-Script is available at https://github.com/labbcb/hpexome/blob/master/hpexome/Hpexome.scala.
+Script is available at <https://github.com/labbcb/hpexome/blob/master/hpexome/Hpexome.scala>.
 
 ## Installation
 
