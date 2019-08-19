@@ -20,14 +20,14 @@ All samples will be merged into a single VCF files (`--unified_vcf`) and output 
 ```bash
 hpexome \
     --bam alignment_files \
-    --genome ref/ucsc.hg19.fasta  \
-    --dbsnp ref/dbsnp_138.hg19.vcf \
-    --indels ref/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf \
-    --indels ref/1000G_phase1.indels.hg19.sites.vcf \
-    --sites ref/1000G_phase1.snps.high_confidence.hg19.sites.vcf \
-    --sites ref/1000G_omni2.5.hg19.sites.vcf \
+    --genome references/b37/human_g1k_v37_decoy.fasta  \
+    --dbsnp references/b37/dbsnp_138.b37.vcf \
+    --indels references/b37/Mills_and_1000G_gold_standard.indels.b37.vcf \
+    --indels references/b37/1000G_phase1.indels.b37.vcf \
+    --sites references/b37/1000G_phase1.snps.high_confidence.b37.vcf \
+    --sites references/b37/1000G_omni2.5.b37.vcf \
     --unified_vcf \
     --scatter_count 16 \
-    --job_runner PbsEngine \
+    --job_runner GridEngine \
     result_fies
 ```

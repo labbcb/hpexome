@@ -44,10 +44,11 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
 @click.option('--dbsnp', 'dbsnp_file', required=True, help='dbSNP file in VCF format')
 @click.option('--sites', 'known_sites_files', required=True, multiple=True,
               help='VCF files containing known polymorphic sites to skip over in the recalibration algorithm')
-@click.option('--indels', 'known_indels_files', multiple=True)
+@click.option('--indels', 'known_indels_files', multiple=True,
+              help='Inputs the VCF file with known indels to be used')
 @click.option('-L', '--intervals', 'intervals_files', multiple=True,
               help='One or more genomic intervals over which to operate')
-@click.option('--unified_vcf', is_flag=True, default=False, help="Unify VCF files into a single one", show_default=True)
+@click.option('--unified_vcf', is_flag=True, default=False, help='Unify VCF files into a single one', show_default=True)
 @click.option('-O', '--output_file_name', default='unified.vcf', help='Output file name for unified VCF',
               show_default=True)
 @click.option('--min_prunning', default=2, help='Minimum support to not prune paths in the graph', show_default=True)
