@@ -82,7 +82,7 @@ hpexome \
     --unified_vcf \
     --scatter_count 16 \
     --job_runner GridEngine \
-    result_fies
+    result_files
 ```
 
 ## References
