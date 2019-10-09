@@ -34,16 +34,16 @@ class HPexome extends QScript {
   var knownIndelsFiles: List[File] = Nil
 
   @Input(doc = "dbSNP File", shortName = "dbsnp", required = true)
-  var dbSNPFile: File = _
+  var dbSnpFile: File = _
 
   @Input(doc = "Genomic intervals over which to operate", shortName = "L", required = false)
   var genomicIntervalsFiles: File = _
 
   @Argument(doc = "Number of data threads", shortName = "nt", required = false)
-  var nt: Int = _
+  var ntp: Int = _
 
   @Argument(doc = "Number of cpu threads", shortName = "nct", required = false)
-  var nct: Int = _
+  var nctp: Int = _
 
   @Argument(doc = "Scatter Count", shortName = "scattercount", required = false)
   var scatterCount: Int = _
@@ -78,8 +78,8 @@ class HPexome extends QScript {
   }
 
   trait ParallelNCT extends CommandLineGATK {
-    if (nct > 1 && scatterCount <= 1) {
-      this.nct = nct
+    if (nctp > 1 && scatterCount <= 1) {
+      this.nct = nctp
     }
   }
 
@@ -92,7 +92,7 @@ class HPexome extends QScript {
   trait HCConfig extends HaplotypeCaller {
     this.stand_call_conf = standCallConf
     this.minPruning = minPruning
-    this.dbsnp = dbSNPFile
+    this.dbsnp = dbSnpFile
   }
 
   def script() {
@@ -109,8 +109,8 @@ class HPexome extends QScript {
         realignerTargetCreator.known = knownIndelsFiles
       }
       realignerTargetCreator.out = swapExt(outputDir, bamFile, "bam", "intervals")
-      if (nt > 1 && scatterCount <= 1) {
-        realignerTargetCreator.nt = nt
+      if (ntp > 1 && scatterCount <= 1) {
+        realignerTargetCreator.nt = ntp
       }
       if (scatterCount > 1) {
         realignerTargetCreator.scatterCount = scatterCount
@@ -150,20 +150,19 @@ class HPexome extends QScript {
       add(printReads)
 
       if (!unifiedVcf) {
-        val haplotypeCaller = new HaplotypeCaller with GenomeReference with HCConfig //with ParallelNCT
+        val haplotypeCaller = new HaplotypeCaller with GenomeReference with HCConfig
         haplotypeCaller.input_file :+= printReads.out
-        haplotypeCaller.out = swapExt(outputDir, bamFile, "bam", "raw.vcf")
+        haplotypeCaller.out = swapExt(outputDir, bamFile, "bam", "HC.raw.vcf")
         if (scatterCount > 1) {
           haplotypeCaller.scatterCount = scatterCount
         }
         add(haplotypeCaller)
       }
-
       printReadsOutputFiles +:= printReads.out
     }
 
     if (unifiedVcf) {
-      val haplotypeCaller = new HaplotypeCaller with GenomeReference with HCConfig with GenomicIntervals //with ParallelNCT
+      val haplotypeCaller = new HaplotypeCaller with GenomeReference with HCConfig with GenomicIntervals
       haplotypeCaller.input_file = printReadsOutputFiles
       haplotypeCaller.out = outputDir + "/" + unifiedVcfFile
       if (scatterCount > 1) {
