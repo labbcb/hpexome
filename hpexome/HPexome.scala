@@ -37,7 +37,7 @@ class HPexome extends QScript {
   var dbSnpFile: File = _
 
   @Input(doc = "Genomic intervals over which to operate", shortName = "L", required = false)
-  var genomicIntervalsFiles: File = _
+  var genomicIntervalsFile: Seq[File] = Nil
 
   @Argument(doc = "Number of data threads", shortName = "nt", required = false)
   var ntp: Int = _
@@ -87,8 +87,8 @@ class HPexome extends QScript {
   }
 
   trait GenomicIntervals extends CommandLineGATK {
-    if (intervals != null) {
-      this.intervals = intervals
+    if (genomicIntervalsFile != null) {
+      this.intervals = genomicIntervalsFile
     }
   }
 
