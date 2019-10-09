@@ -118,7 +118,6 @@ class HPexome extends QScript {
       if (scatterCount > 1) {
         realignerTargetCreator.scatterCount = scatterCount
       }
-      realignerTargetCreator.javaMemoryLimit = javaMemoryLimit
       add(realignerTargetCreator)
 
       val indelRealigner = new IndelRealigner with GenomeReference with GenomicIntervals
@@ -131,7 +130,6 @@ class HPexome extends QScript {
       if (scatterCount > 1) {
         indelRealigner.scatterCount = scatterCount
       }
-      indelRealigner.javaMemoryLimit = javaMemoryLimit
       add(indelRealigner)
 
       val baseRecalibrator = new BaseRecalibrator with GenomeReference with ParallelNCT
@@ -143,7 +141,6 @@ class HPexome extends QScript {
         baseRecalibrator.scatterCount = scatterCount
       }
       baseRecalibrator.out = swapExt(outputDir, bamFile, "bam", "recal.cvs")
-      baseRecalibrator.javaMemoryLimit = javaMemoryLimit
       add(baseRecalibrator)
 
       val printReads = new PrintReads with GenomeReference with ParallelNCT
@@ -153,7 +150,6 @@ class HPexome extends QScript {
       if (scatterCount > 1) {
         printReads.scatterCount = scatterCount
       }
-      printReads.javaMemoryLimit = javaMemoryLimit
       add(printReads)
 
       if (!unifiedVcf) {
@@ -163,7 +159,6 @@ class HPexome extends QScript {
         if (scatterCount > 1) {
           haplotypeCaller.scatterCount = scatterCount
         }
-        haplotypeCaller.javaMemoryLimit = javaMemoryLimit
         add(haplotypeCaller)
       }
       printReadsOutputFiles +:= printReads.out
