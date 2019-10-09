@@ -95,7 +95,7 @@ def hpexome(bams, genome_fasta_file, dbsnp_file,
 
     # get Queue script inside this Python package
     # start building command line
-    script_path = pkg_resources.resource_filename(__name__, 'Hpexome.scala')
+    script_path = pkg_resources.resource_filename(__name__, 'HPexome.scala')
     command = [java_path]
     
     if java_args:
