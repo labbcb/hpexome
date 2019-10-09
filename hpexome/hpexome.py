@@ -63,7 +63,7 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
 @click.option('--logging_level', help='Set the minimum level of logging')
 @click.option('--dont_run', is_flag=True, default=False, show_default=True, help='Perform dry run')
 @click.option('--java_path', default='java', help='Path to java', show_default=True)
-@click.option('--java_mem', multiple=True, help='Maximum Java memory in GB.')
+@click.option('--java_mem', help='Maximum Java memory in GB.')
 @click.option('--queue_path', default='Queue.jar', help='Path to Queue jar file', show_default=True)
 @click.argument('destination', default='.', type=click.Path())
 def hpexome(bams, genome_fasta_file, dbsnp_file,
