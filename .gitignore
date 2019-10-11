@@ -6,3 +6,4 @@ venv
 .vscode
 dist
 build
+.DS_Store
