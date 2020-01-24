@@ -101,8 +101,14 @@ def hpexome(bams, genome_fasta_file, dbsnp_file,
     if not dont_run:
         command.append('-run')
 
-    arguments = {'-I': bam_files, '-R': genome_fasta_file, '-dbsnp': dbsnp_file, '-known': known_indels_files,
-                 '-knownSites': known_sites_files, '-L': intervals_files}
+    arguments = {
+        '-I': bam_files, 
+        '-R': abspath(genome_fasta_file), 
+        '-dbsnp': abspath(dbsnp_file), 
+        '-known': [abspath(file) for known_indels_files in files],
+        '-knownSites': [abspath(file) for known_sites_files in files],
+        '-L': [abspath(file) for intervals_files in files]
+    }
     for argument, value in arguments.items():
         if value:
             files = [value] if isinstance(value, str) else value
