@@ -105,9 +105,9 @@ def hpexome(bams, genome_fasta_file, dbsnp_file,
         '-I': bam_files, 
         '-R': abspath(genome_fasta_file), 
         '-dbsnp': abspath(dbsnp_file), 
-        '-known': [abspath(file) for known_indels_files in files],
-        '-knownSites': [abspath(file) for known_sites_files in files],
-        '-L': [abspath(file) for intervals_files in files]
+        '-known': [abspath(f) for f in known_indels_files],
+        '-knownSites': [abspath(f) for f in known_sites_files],
+        '-L': [abspath(f) for f in intervals_files]
     }
     for argument, value in arguments.items():
         if value:
