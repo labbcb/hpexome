@@ -41,10 +41,6 @@ __System path to required software__
 
 `DESTINATION` Sets the directory in which the outputs will be saved. If not set, the outputs will be saved in the directory in which the process is running.
 
-The following command line takes a list of ready-analysis BAM files stored in `alignment_files` directory and reference genomes files (version b37).
-Then it breaks input data into smaller parts (`--scatter_count 16`) and submits to SGE batch system (`--job_runner PbsEngine`).
-All samples will be merged into a single VCF files (`--unified_vcf`) and output files will be written in `result_files` directory.
-
 ## Reproducible example
 
 In this example we will download and process a [whole-exome sequence sample](https://www.internationalgenome.org/data-portal/sample/HG00114) from the 1000 Genomes Project and required reference files, as well as required software.
@@ -160,9 +156,7 @@ In some computing setups it will require to set `SGE_ROOT` environment variable.
 export SGE_ROOT=/var/lib/gridengine
 ```
 
-The following command line takes a list of ready-analysis BAM files stored in `alignment_files` directory and reference genomes files (version b37).
-Then it breaks input data into smaller parts (`--scatter_count 16`) and submits to SGE batch system (`--job_runner PbsEngine`).
-Output files will be written in `result_files` directory.
+Run **HPexome**.
 
 ```bash
 hpexome \
@@ -181,20 +175,20 @@ hpexome \
 It is expected the following files.
 
     result_files/
-    ├── HG00114.sorted.rgfix.HC.raw.vcf
-    ├── HG00114.sorted.rgfix.HC.raw.vcf.idx
-    ├── HG00114.sorted.rgfix.HC.raw.vcf.out
-    ├── HG00114.sorted.rgfix.intervals
-    ├── HG00114.sorted.rgfix.intervals.out
-    ├── HG00114.sorted.rgfix.realn.bai
-    ├── HG00114.sorted.rgfix.realn.bam
-    ├── HG00114.sorted.rgfix.realn.bam.out
-    ├── HG00114.sorted.rgfix.recal.bai
-    ├── HG00114.sorted.rgfix.recal.bam
-    ├── HG00114.sorted.rgfix.recal.bam.out
-    ├── HG00114.sorted.rgfix.recal.cvs
-    ├── HG00114.sorted.rgfix.recal.cvs.out
-    └── HPexome.jobreport.txt
+    ├── HPexome.jobreport.txt
+    ├── NA12878.sorted.rgfix.HC.raw.vcf
+    ├── NA12878.sorted.rgfix.HC.raw.vcf.idx
+    ├── NA12878.sorted.rgfix.HC.raw.vcf.out
+    ├── NA12878.sorted.rgfix.intervals
+    ├── NA12878.sorted.rgfix.intervals.out
+    ├── NA12878.sorted.rgfix.realn.bai
+    ├── NA12878.sorted.rgfix.realn.bam
+    ├── NA12878.sorted.rgfix.realn.bam.out
+    ├── NA12878.sorted.rgfix.recal.bai
+    ├── NA12878.sorted.rgfix.recal.bam
+    ├── NA12878.sorted.rgfix.recal.bam.out
+    ├── NA12878.sorted.rgfix.recal.cvs
+    └── NA12878.sorted.rgfix.recal.cvs.out
 
 See [hpexome-paper repository](https://github.com/labbcb/hpexome-paper) for information about performance and validation tests.
 
