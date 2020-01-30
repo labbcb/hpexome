@@ -21,23 +21,6 @@ def check_files_exist(files):
             click.echo('File not found: ' + file, err=True)
         exit(1)
 
-
-def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
-    """Download Queue jar file"""
-    temp_dir = tempfile.mkdtemp()
-    bz2_file = join(temp_dir, 'Queue-{}.tar.bz2'.format(version))
-
-    click.echo('Downloading Queue version {}... '.format(version), err=True, nl=False)
-    url = 'https://software.broadinstitute.org/gatk/download/auth?package=Queue-archive&version=' + version
-    urllib.request.urlretrieve(url, bz2_file)
-    click.echo('done')
-
-    with tarfile.open(bz2_file, 'r:bz2') as file:
-        file.extractall(temp_dir)
-    shutil.move(join(temp_dir, 'Queue-' + version, 'Queue.jar'), destination)
-    shutil.rmtree(temp_dir)
-
-
 @click.command()
 @click.option('-I', '--bam', 'bams', required=True, multiple=True, help='One or more BAM files or directories')
 @click.option('-R', '--genome', 'genome_fasta_file', required=True, help='Reference genome in single FASTA file')
@@ -64,21 +47,14 @@ def download_queue(destination='Queue.jar', version='3.8-1-0-gf15c1c3ef'):
 @click.option('--dont_run', is_flag=True, default=False, show_default=True, help='Perform dry run')
 @click.option('--java_path', default='java', help='Path to java', show_default=True)
 @click.option('--java_mem', help='Maximum Java memory in GB.')
-@click.option('--queue_path', default='Queue.jar', help='Path to Queue jar file', show_default=True)
 @click.argument('destination', default='.', type=click.Path())
 def hpexome(bams, genome_fasta_file, dbsnp_file,
             known_sites_files, known_indels_files, intervals_files,
             unified_vcf, output_file_name, min_prunning, stand_call_conf,
             num_data_threads, num_threads_per_data_thread, scatter_count,
             job_runner, job_queue, job_native, logging_level, dont_run,
-            java_path, java_mem, queue_path, destination):
+            java_path, java_mem, destination):
     """An automated workflow for processing whole-exome sequencing data"""
-    # if Queue.jar not found download it in working directory,
-    # then expand path
-    if not isfile(queue_path):
-        download_queue(queue_path)
-    queue_path = abspath(queue_path)
-
     # given a list of BAM files or directories containing them,
     # create a list of absolute path to BAM files
     m = compile('\\.bam$')
@@ -93,8 +69,9 @@ def hpexome(bams, genome_fasta_file, dbsnp_file,
             click.echo('File or directory not found: ' + bam, err=True)
             exit(1)
 
-    # get Queue script inside this Python package
+    # get Queue jar file and script inside this Python package
     # start building command line
+    queue_path = pkg_resources.resource_filename(__name__, 'Queue.jar')
     script_path = pkg_resources.resource_filename(__name__, 'HPexome.scala')
     command = [java_path, '-jar', queue_path, '-S', script_path]
 
