@@ -1,0 +1,2 @@
+ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA12878/sequence_read/SRR098401_1.filt.fastq.gz
+ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA12878/sequence_read/SRR098401_2.filt.fastq.gz
