@@ -190,7 +190,7 @@ It is expected the following files.
     ├── NA12878.sorted.rgfix.recal.cvs
     └── NA12878.sorted.rgfix.recal.cvs.out
 
-See [hpexome-paper repository](https://github.com/labbcb/hpexome-paper) for information about performance and validation tests.
+See [hpexome-paper repository](/docs) for information about performance and validation tests.
 
 ## Development
 
