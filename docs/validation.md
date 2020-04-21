@@ -1,6 +1,5 @@
 ---
 title: "Validating hpexome tool"
-date: "9/23/2015"
 output: 
   html_document: 
     keep_md: yes
