@@ -121,10 +121,9 @@ export SGE_ROOT=/var/lib/gridengine
 bash run_performance_tests.sh
 ```
 
-It will generate [hpexome_timings.csv](hpexome_timings.csv) file.
+The script generated [hpexome_timings.csv](hpexome_timings.csv) file.
 
-
-Report is aveilable at [performance.md](performance.md).
+Report is available at [performance.md](performance.md).
 
 ## Validation test
 
