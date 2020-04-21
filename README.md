@@ -190,7 +190,7 @@ It is expected the following files.
     ├── NA12878.sorted.rgfix.recal.cvs
     └── NA12878.sorted.rgfix.recal.cvs.out
 
-See [/docs](/docs) folder for information about performance and validation tests.
+See [docs](docs) folder for information about performance and validation tests.
 
 ## Development
 
